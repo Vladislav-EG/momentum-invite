@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Momentum - Friends Invite</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .message {
+            font-size: 1.1em;
+            margin-top: 20px;
+            opacity: 0.9;
+        }
+        .store-buttons {
+            display: none;
+            margin-top: 30px;
+        }
+        .store-button {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .store-button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Join Momentum!</h1>
+        <div class="spinner"></div>
+        <p class="message" id="message">Opening the app...</p>
+        <div class="store-buttons" id="storeButtons">
+            <p>Don't have the app yet?</p>
+            <a href="#" class="store-button" id="storeLink">Download Now</a>
+        </div>
+    </div>
+
+    <script>
+        // Parse URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const inviterId = urlParams.get('inviterId');
+        const timestamp = urlParams.get('t');
+
+        // Detect platform
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+        const isAndroid = /android/i.test(userAgent);
+
+        // Store URLs - REPLACE THESE WITH YOUR ACTUAL APP STORE URLS
+        const appStoreUrl = 'https://apps.apple.com/app/momentum/idYOUR_APP_ID';
+        const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.yourcompany.momentum';
+
+        // Build deep link URL
+        let deepLinkUrl = 'momentum://invite';
+        if (inviterId) {
+            deepLinkUrl += `?inviterId=${inviterId}`;
+            if (timestamp) {
+                deepLinkUrl += `&t=${timestamp}`;
+            }
+        }
+
+        console.log('Deep Link URL:', deepLinkUrl);
+
+        // Attempt to open the app via deep link
+        function attemptDeepLink() {
+            // Create hidden iframe to trigger deep link (works better on some browsers)
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = deepLinkUrl;
+            document.body.appendChild(iframe);
+
+            // Also try direct location change
+            window.location = deepLinkUrl;
+        }
+
+        // Show store buttons after delay
+        function showStoreButtons() {
+            document.getElementById('message').textContent =
+                "App not installed? Download it now!";
+            document.getElementById('storeButtons').style.display = 'block';
+
+            const storeLink = document.getElementById('storeLink');
+            if (isIOS) {
+                storeLink.href = appStoreUrl;
+                storeLink.textContent = '📱 App Store';
+            } else if (isAndroid) {
+                storeLink.href = playStoreUrl;
+                storeLink.textContent = '📱 Google Play';
+            } else {
+                storeLink.href = playStoreUrl;
+                storeLink.textContent = '📱 Download App';
+            }
+        }
+
+        // Detect if app was opened (page becomes hidden)
+        let appOpened = false;
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                appOpened = true;
+            }
+        });
+
+        // Try to open the app
+        attemptDeepLink();
+
+        // If app didn't open after 2.5 seconds, show store buttons
+        setTimeout(function() {
+            if (!appOpened) {
+                showStoreButtons();
+            }
+        }, 2500);
+
+        // Also detect if user returns to the page (app might have opened briefly)
+        window.addEventListener('focus', function() {
+            if (!appOpened) {
+                showStoreButtons();
+            }
+        });
+    </script>
+</body>
+</html>
