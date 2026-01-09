@@ -5,10 +5,11 @@
         ],
         "target": {
             "namespace": "android_app",
-            "package_name": "com.yourcompany.momentum",
+            "package_name": "com.upopa.momentum",
             "sha256_cert_fingerprints": [
-                "PUT_YOUR_SHA256_FINGERPRINT_HERE"
+                "9D:EE:A1:DD:58:04:A8:B7:58:32:F0:42:48:54:52:80:F1:B7:E4:54:57:32:CD:C2:99:4F:4C:CF:00:7D:06:9D"
             ]
         }
     }
 ]
+
