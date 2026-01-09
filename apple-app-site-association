@@ -3,7 +3,7 @@
         "apps": [],
         "details": [
             {
-                "appID": "TEAM_ID.com.yourcompany.momentum",
+                "appID": "UYFV8VN697.com.app.x",
                 "paths": [
                     "*"
                 ]
@@ -12,7 +12,8 @@
     },
     "webcredentials": {
         "apps": [
-            "TEAM_ID.com.yourcompany.momentum"
+            "UYFV8VN697.com.app.x"
         ]
     }
 }
+
