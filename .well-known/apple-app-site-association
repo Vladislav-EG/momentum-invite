@@ -1,0 +1,19 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "UYFV8VN697.com.app.x",
+                "paths": [
+                    "*"
+                ]
+            }
+        ]
+    },
+    "webcredentials": {
+        "apps": [
+            "UYFV8VN697.com.app.x"
+        ]
+    }
+}
+
